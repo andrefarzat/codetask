@@ -3,6 +3,8 @@ import re
 from pygments.lexers import get_lexer_for_filename
 from pygments.token import Token
 
+from codetask.task import Task
+
 
 class Extractor:
     """Does the extration in one single file"""
@@ -51,19 +53,3 @@ class Extractor:
             task.filepath = self.filepath
             task.line_number = token['line_number']
             yield task
-
-
-class Task:
-    """ One day, this will be the django model """
-
-    def __init__(self, text):
-        self.text = text
-
-    text = ''
-    assigned = None
-    commit = None
-    filepath = ''
-    line = 0
-    repository = None
-    closed = False
-    creation_time = ''
