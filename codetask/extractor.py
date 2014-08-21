@@ -47,7 +47,7 @@ class Extractor:
                        'line_number': line}
 
     def get_tasks(self):
-        """Return a generator with Task instances"""
+        """Return a generator with ExtractedTask instances"""
         for token in self.get_valid_tokens():
             task = ExtractedTask(token['text'], self.filepath)
             task.line_number = token['line_number']
