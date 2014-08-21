@@ -3,7 +3,7 @@ import re
 from pygments.lexers import get_lexer_for_filename
 from pygments.token import Token
 
-from codetask.task import Task
+from codetask.parsers import get_parser_for_filename
 
 
 class Extractor:
@@ -49,7 +49,21 @@ class Extractor:
     def get_tasks(self):
         """Return a generator with Task instances"""
         for token in self.get_valid_tokens():
-            task = Task(token['text'])
-            task.filepath = self.filepath
+            task = ExtractedTask(token['text'], self.filepath)
             task.line_number = token['line_number']
             yield task
+
+
+class ExtractedTask:
+    """Default scaffolding for an extracted task"""
+    text = ''
+    filepath = ''
+    line_number = None
+
+    def __init__(self, text, filepath, line_number=None):
+        Parser = get_parser_for_filename(filepath)
+        parser = Parser(text)
+
+        self.text = parser.text
+        self.filepath = filepath
+        self.line_number = line_number
