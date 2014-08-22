@@ -61,7 +61,7 @@ class TestParsers_parse_text(TestCase):
             self.assertEqual(parser.username, expected['username'])
 
     def test_colon_cases(self):
-        for text, expected in SQUARED_TEXTS:
+        for text, expected in COLON_TEXTS:
             parser = BaseParser(text)
             self.assertEqual(parser.text, expected['text'])
             self.assertEqual(parser.label, expected['label'])

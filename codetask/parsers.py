@@ -4,7 +4,7 @@ import re
 class BaseParser:
     pattern = re.compile(r'\w+\.txt$')
     _squared_pattern = re.compile(r'(\[.?\])(\([\w\s\-\.\@]+\))?:?(.+)?$')
-    _colon_pattern = re.compile(r'(\w+):([\w\s]+)?')
+    _colon_pattern = re.compile(r'(\w+)(\([\w]+\))?:([\w\s]+)?')
     _username_pattern = re.compile(r'(^\(|\)$)')
 
     def __init__(self, text):
@@ -13,7 +13,7 @@ class BaseParser:
         self.username = ''
         self.text = ''
         self.label = ''
-        self.parse_text(text)
+        self.parse_text(self._text)
 
     @classmethod
     def file_matches(self, filepath):
@@ -28,11 +28,16 @@ class BaseParser:
     def parse_text(self, text):
         if text.startswith('['):
             self._parse_squared_text(text)
+        else:
+            self._parse_colon_text(text)
 
     def parse_username(self, username):
         username = username.strip()
         username = self._username_pattern.sub('', username)
         return username.strip()
+
+    def parse_label(self, label):
+        return label.strip().lower()
 
     def _parse_squared_text(self, text):
         result = self._squared_pattern.match(text)
@@ -46,9 +51,9 @@ class BaseParser:
         result = self._colon_pattern.match(text)
         if result:
             self.closed = False
+            self.label = self.parse_label(result.group(1) or '')
             self.username = (result.group(2) or '').strip()
             self.text = (result.group(3) or '').strip()
-            self.label = ''
 
 
 class PythonParser(BaseParser):
