@@ -64,6 +64,6 @@ class ExtractedTask:
         Parser = get_parser_for_filename(filepath)
         parser = Parser(text)
 
-        self.text = parser.text
+        self.text = parser.text.strip()
         self.filepath = filepath
         self.line_number = line_number

@@ -6,7 +6,7 @@ Code Task
 
 test:
 ```sh
-nosetests --with-cov --cover-html --cover-package=codetask
+python manage.py test --with-coverage --cover-html --cover-erase --cover-package=codetask
 ```
 
 

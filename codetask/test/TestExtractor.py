@@ -1,8 +1,9 @@
 import os
-from unittest import TestCase
 from pygments.token import Token
 
-from codetask.extractor import Extractor
+from django.test import TestCase
+
+from codetask.extractor import Extractor, ExtractedTask
 
 
 BASE_DIR = os.path.join(os.path.dirname(__file__), 'mockproj')
@@ -19,7 +20,7 @@ class TestExtractor(TestCase):
         self.assertEqual(file_content, extractor.file_content)
 
     def test_get_valid_tokens(self):
-        """Should return only comments tokens"""
+        """Should return only comment tokens"""
         extractor = Extractor(self.python_file)
 
         tokens = extractor.get_valid_tokens()
@@ -38,3 +39,13 @@ class TestExtractor(TestCase):
         extractor = Extractor(self.python_file)
 
         self.assertEqual(3, extractor._get_initial_line_number())
+
+
+class TestExtractedTask(TestCase):
+
+    def test_text(self):
+        """given a whole line, it would return only the text of the task"""
+        task = ExtractedTask('# todo: nothing', 'python.py')
+        self.assertEqual(task.text, 'nothing')
+        self.assertEqual(task.label, 'todo')
+        self.assertEqual(task.filepath, 'python.py')
