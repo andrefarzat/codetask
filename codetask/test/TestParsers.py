@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.test import TestCase
 
 from codetask.parsers import get_parser_for_filename, BaseParser, PythonParser
@@ -9,11 +10,18 @@ SQUARED_TEXTS = (
     ('[]:some task', {'text': 'some task', 'closed': False, 'username': ''}),
     ('[] some task', {'text': 'some task', 'closed': False, 'username': ''}),
     ('[]: some task', {'text': 'some task', 'closed': False, 'username': ''}),
+
     ('[ ]', {'text': '', 'closed': False, 'username': ''}),
     ('[ ]some task', {'text': 'some task', 'closed': False, 'username': ''}),
     ('[ ]:some task', {'text': 'some task', 'closed': False, 'username': ''}),
     ('[ ]: some task', {'text': 'some task', 'closed': False, 'username': ''}),
     ('[x]: some task', {'text': 'some task', 'closed': True, 'username': ''}),
+
+    ('[](joey)', {'text': '', 'closed': False, 'username': 'joey'}),
+    ('[](joey@no)', {'text': '', 'closed': False, 'username': 'joey@no'}),
+    ('[](dee dee):', {'text': '', 'closed': False, 'username': 'dee dee'}),
+    ('[x](mark)', {'text': '', 'closed': True, 'username': 'mark'}),
+    ('[x](C. J.)', {'text': '', 'closed': True, 'username': 'C. J.'}),
 )
 
 
@@ -22,6 +30,18 @@ class TestParsers(TestCase):
     def test_get_parser_for_filename(self):
         Parser = get_parser_for_filename('file.py')
         self.assertEqual(Parser, PythonParser)
+
+    def test_parse_username(self):
+        parser = BaseParser('')
+        texts = (
+            ('andre', 'andre'),
+            ('andre farzat', 'andre farzat'),
+            ('(andré farzat)', 'andré farzat'),
+            ('(andre )', 'andre'),
+        )
+
+        for text, expected in texts:
+            self.assertEqual(parser.parse_username(text), expected)
 
 
 class TestParsers_parse_text(TestCase):
