@@ -4,6 +4,7 @@ import re
 class BaseParser:
     pattern = re.compile(r'\w+\.txt$')
     _squared_pattern = re.compile(r'(\[.?\])(\(\w+\))?:?(.+)$')
+    _colon_pattern = re.compile(r'(\w+):([\w\s]+)?')
 
     def __init__(self, text):
         self._text = self.remove_markers(text)
@@ -30,6 +31,13 @@ class BaseParser:
         result = self._squared_pattern.match(text)
         if result:
             self.closed = (result.group(1) == '[x]')
+            self.username = (result.group(2) or '').strip()
+            self.text = (result.group(3) or '').strip()
+
+    def _parse_colon_text(self, text):
+        result = self._colon_pattern.match(text)
+        if result:
+            self.closed = False
             self.username = (result.group(2) or '').strip()
             self.text = (result.group(3) or '').strip()
 
