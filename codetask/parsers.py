@@ -12,6 +12,7 @@ class BaseParser:
         self.closed = False
         self.username = ''
         self.text = ''
+        self.label = ''
         self.parse_text(text)
 
     @classmethod
@@ -39,6 +40,7 @@ class BaseParser:
             self.closed = (result.group(1) == '[x]')
             self.username = self.parse_username(result.group(2) or '')
             self.text = (result.group(3) or '').strip()
+            self.label = ''
 
     def _parse_colon_text(self, text):
         result = self._colon_pattern.match(text)
@@ -46,6 +48,7 @@ class BaseParser:
             self.closed = False
             self.username = (result.group(2) or '').strip()
             self.text = (result.group(3) or '').strip()
+            self.label = ''
 
 
 class PythonParser(BaseParser):

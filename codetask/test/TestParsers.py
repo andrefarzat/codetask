@@ -25,6 +25,13 @@ SQUARED_TEXTS = (
 )
 
 
+COLON_TEXTS = (
+    ('todo:', {'text': '', 'username': '', 'label': 'todo'}),
+    ('TODO:', {'text': '', 'username': '', 'label': 'todo'}),
+    ('   tOdO:', {'text': '', 'username': '', 'label': 'todo'}),
+)
+
+
 class TestParsers(TestCase):
 
     def test_get_parser_for_filename(self):
@@ -51,3 +58,11 @@ class TestParsers_parse_text(TestCase):
             parser = BaseParser(text)
             self.assertEqual(parser.text, expected['text'])
             self.assertEqual(parser.closed, expected['closed'])
+            self.assertEqual(parser.username, expected['username'])
+
+    def test_colon_cases(self):
+        for text, expected in SQUARED_TEXTS:
+            parser = BaseParser(text)
+            self.assertEqual(parser.text, expected['text'])
+            self.assertEqual(parser.label, expected['label'])
+            self.assertEqual(parser.username, expected['username'])
