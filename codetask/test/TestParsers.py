@@ -29,6 +29,16 @@ COLON_TEXTS = (
     ('todo:', {'text': '', 'username': '', 'label': 'todo'}),
     ('TODO:', {'text': '', 'username': '', 'label': 'todo'}),
     ('   tOdO:', {'text': '', 'username': '', 'label': 'todo'}),
+
+    ('todo:some task', {'text': 'some task', 'username': '', 'label': 'todo'}),
+    ('tod: some task', {'text': 'some task', 'username': '', 'label': 'tod'}),
+
+    ('todo(joey):', {'text': '', 'username': 'joey', 'label': 'todo'}),
+    ('todo (joey):', {'text': '', 'username': 'joey', 'label': 'todo'}),
+    ('todo(joey ):', {'text': '', 'username': 'joey', 'label': 'todo'}),
+    ('todo:', {'text': '', 'username': 'joey', 'label': 'todo'}),
+    ('todo(joey): some task', {'text': 'some task', 'username': 'joey',
+                               'label': 'todo'}),
 )
 
 
