@@ -36,7 +36,7 @@ COLON_TEXTS = (
     ('todo(joey):', {'text': '', 'username': 'joey', 'label': 'todo'}),
     ('todo (joey):', {'text': '', 'username': 'joey', 'label': 'todo'}),
     ('todo(joey ):', {'text': '', 'username': 'joey', 'label': 'todo'}),
-    ('todo:', {'text': '', 'username': 'joey', 'label': 'todo'}),
+    ('todo (joey ):', {'text': '', 'username': 'joey', 'label': 'todo'}),
     ('todo(joey): some task', {'text': 'some task', 'username': 'joey',
                                'label': 'todo'}),
 )
@@ -76,3 +76,13 @@ class TestParsers_parse_text(TestCase):
             self.assertEqual(parser.text, expected['text'])
             self.assertEqual(parser.label, expected['label'])
             self.assertEqual(parser.username, expected['username'])
+
+
+class TestPythonParser(TestCase):
+
+    def test_remove_markers(self):
+        parser = PythonParser('#oi')
+        self.assertEqual(parser._text, 'oi')
+
+        parser = PythonParser('""" oi """')
+        self.assertEqual(parser._text, 'oi')

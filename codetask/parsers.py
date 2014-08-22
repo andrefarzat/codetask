@@ -4,7 +4,7 @@ import re
 class BaseParser:
     pattern = re.compile(r'\w+\.txt$')
     _squared_pattern = re.compile(r'(\[.?\])(\([\w\s\-\.\@]+\))?:?(.+)?$')
-    _colon_pattern = re.compile(r'(\w+)(\([\w]+\))?:([\w\s]+)?')
+    _colon_pattern = re.compile(r'([\w\s]+)(\([\w\s]+\))?:([\w\s]+)?')
     _username_pattern = re.compile(r'(^\(|\)$)')
 
     def __init__(self, text):
@@ -42,17 +42,17 @@ class BaseParser:
     def _parse_squared_text(self, text):
         result = self._squared_pattern.match(text)
         if result:
+            self.label = ''
             self.closed = (result.group(1) == '[x]')
             self.username = self.parse_username(result.group(2) or '')
             self.text = (result.group(3) or '').strip()
-            self.label = ''
 
     def _parse_colon_text(self, text):
         result = self._colon_pattern.match(text)
         if result:
             self.closed = False
             self.label = self.parse_label(result.group(1) or '')
-            self.username = (result.group(2) or '').strip()
+            self.username = self.parse_username(result.group(2) or '')
             self.text = (result.group(3) or '').strip()
 
 
@@ -73,4 +73,4 @@ def get_parser_for_filename(filename):
     for parser in PARSERS:
         if parser.file_matches(filename):
             return parser
-    return None
+    return BaseParser

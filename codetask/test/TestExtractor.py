@@ -11,6 +11,7 @@ BASE_DIR = os.path.join(os.path.dirname(__file__), 'mockproj')
 
 class TestExtractor(TestCase):
     python_file = os.path.join(BASE_DIR, 'python.py')
+    text_file = os.path.join(BASE_DIR, 'text.txt')
 
     def test_file_content_property(self):
         with open(self.python_file) as f:
@@ -18,6 +19,10 @@ class TestExtractor(TestCase):
 
         extractor = Extractor(self.python_file)
         self.assertEqual(file_content, extractor.file_content)
+
+    def test___init___with_wrong_filepath(self):
+        with self.assertRaises(ValueError):
+            Extractor('')
 
     def test_get_valid_tokens(self):
         """Should return only comment tokens"""
@@ -37,8 +42,15 @@ class TestExtractor(TestCase):
 
     def test__get_initial_line_number(self):
         extractor = Extractor(self.python_file)
-
         self.assertEqual(3, extractor._get_initial_line_number())
+
+        extractor = Extractor(self.text_file)
+        self.assertEqual(1, extractor._get_initial_line_number())
+
+    def test_get_tasks(self):
+        extractor = Extractor(self.python_file)
+        for task in extractor.get_tasks():
+            self.assertEqual(task.__class__, ExtractedTask)
 
 
 class TestExtractedTask(TestCase):
