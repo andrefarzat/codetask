@@ -45,6 +45,9 @@ class Extractor:
         self.filepath = filepath
         self.lexer = lexer or get_lexer_for_filename(filepath)
 
+    def __repr__(self):
+        return '<Extractor filepath=%s>' % self.filepath
+
     @property
     def file_content(self):
         if getattr(self, '_file_content', None) is None:
