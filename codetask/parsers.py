@@ -75,7 +75,7 @@ class RubyParser(BaseParser):
         return text.strip()
 
 
-PARSERS = (PythonParser, )
+PARSERS = (PythonParser, RubyParser, )
 
 
 def get_parser_for_filename(filename):
