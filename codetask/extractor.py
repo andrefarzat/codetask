@@ -1,9 +1,32 @@
 import os
 import re
-from pygments.lexers import get_lexer_for_filename
+from pygments.lexers import get_lexer_for_filename, ClassNotFound
 from pygments.token import Token
 
 from codetask.parsers import get_parser_for_filename
+
+
+class DirExtractor:
+    """Extractor which acts in a given dir"""
+
+    def __init__(self, path):
+        if not os.path.isdir(path):
+            raise ValueError('%s is not a directory' % path)
+
+        self.path = path
+
+    def get_extractors(self):
+        """Returns a generator with all extractor instances
+        for all valid files"""
+        for root, dirs, files in os.walk(self.path):
+            for filename in files:
+                try:
+                    lexer = get_lexer_for_filename(filename)
+                except ClassNotFound:
+                    continue
+
+                filepath = os.path.join(root, filename)
+                yield Extractor(filepath, lexer=lexer)
 
 
 class Extractor:
@@ -11,12 +34,12 @@ class Extractor:
 
     _initial_line_number_re = re.compile(r'^(\n+)')
 
-    def __init__(self, filepath):
+    def __init__(self, filepath, lexer=None):
         if not os.path.isfile(filepath):
             raise ValueError("%s does not exist" % filepath)
 
         self.filepath = filepath
-        self.lexer = get_lexer_for_filename(filepath)
+        self.lexer = lexer or get_lexer_for_filename(filepath)
 
     @property
     def file_content(self):

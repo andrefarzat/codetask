@@ -3,10 +3,22 @@ from pygments.token import Token
 
 from django.test import TestCase
 
-from codetask.extractor import Extractor, ExtractedTask
+from codetask.extractor import Extractor, ExtractedTask, DirExtractor
 
 
 BASE_DIR = os.path.join(os.path.dirname(__file__), 'mockproj')
+
+
+class TestDirExtractor(TestCase):
+
+    def test___init__with_wrong_path(self):
+        with self.assertRaises(ValueError):
+            DirExtractor('')
+
+    def test_get_extractors(self):
+        dir_extractor = DirExtractor(BASE_DIR)
+        for extractor in dir_extractor.get_extractors():
+            self.assertEqual(extractor.__class__, Extractor)
 
 
 class TestExtractor(TestCase):
