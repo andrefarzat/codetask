@@ -15,18 +15,22 @@ class DirExtractor:
 
         self.path = path
 
+    def get_all_files(self):
+        """Returns a generator with all files with the abs path"""
+        for root, dirs, files in os.walk(self.path):
+            for filename in files:
+                yield os.path.join(root, filename)
+
     def get_extractors(self):
         """Returns a generator with all extractor instances
         for all valid files"""
-        for root, dirs, files in os.walk(self.path):
-            for filename in files:
-                try:
-                    lexer = get_lexer_for_filename(filename)
-                except ClassNotFound:
-                    continue
+        for filepath in self.get_all_files():
+            try:
+                lexer = get_lexer_for_filename(filepath)
+            except ClassNotFound:
+                continue
 
-                filepath = os.path.join(root, filename)
-                yield Extractor(filepath, lexer=lexer)
+            yield Extractor(filepath, lexer=lexer)
 
 
 class Extractor:
