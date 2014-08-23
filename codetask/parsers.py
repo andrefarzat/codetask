@@ -66,6 +66,15 @@ class PythonParser(BaseParser):
             return text[3:-3].strip()
 
 
+class RubyParser(BaseParser):
+    pattern = re.compile(r'\w+\.rb$')
+
+    def remove_markers(self, text):
+        if text.startswith('#'):
+            text = text[1:]
+        return text.strip()
+
+
 PARSERS = (PythonParser, )
 
 

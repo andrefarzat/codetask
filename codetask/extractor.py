@@ -65,7 +65,7 @@ class Extractor:
             if '\n' in text:
                 line += 1
 
-            if token[0] is Token.Comment:
+            if token[0] in [Token.Comment, Token.Comment.Single]:
                 yield {'token': token[0], 'text': text,
                        'line_number': line}
 

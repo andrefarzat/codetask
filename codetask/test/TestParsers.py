@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.test import TestCase
 
-from codetask.parsers import get_parser_for_filename, BaseParser, PythonParser
+from codetask.parsers import (get_parser_for_filename, BaseParser,
+                              PythonParser, RubyParser)
 
 
 SQUARED_TEXTS = (
@@ -85,4 +86,11 @@ class TestPythonParser(TestCase):
         self.assertEqual(parser._text, 'oi')
 
         parser = PythonParser('""" oi """')
+        self.assertEqual(parser._text, 'oi')
+
+
+class TestRubyParser(TestCase):
+
+    def test_remove_markers(self):
+        parser = RubyParser('#oi')
         self.assertEqual(parser._text, 'oi')
