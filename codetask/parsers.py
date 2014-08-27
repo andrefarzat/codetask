@@ -82,10 +82,13 @@ class PythonParser(BaseParser):
 
 class RubyParser(BaseParser):
     pattern = re.compile(r'.+\.rb$')
+    _beginend_pattern = re.compile(r'(^\=begin)|(\=end$)')
 
     def remove_markers(self, text):
         if text.startswith('#'):
             text = text[1:]
+        else:
+            text = self._beginend_pattern.sub('', text, count=2)
         return text.strip()
 
 

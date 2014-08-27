@@ -6,6 +6,9 @@ from pygments.token import Token
 from codetask.parsers import get_parser_for_filename
 
 
+VALID_COMMENT_TOKENS = [Token.Comment, Token.Comment.Single]
+
+
 class DirExtractor:
     """Extractor which acts in a given dir"""
 
@@ -72,7 +75,7 @@ class Extractor:
             if '\n' in text:
                 line += 1
 
-            if token[0] in [Token.Comment, Token.Comment.Single]:
+            if token[0] in VALID_COMMENT_TOKENS:
                 yield {'token': token[0], 'text': text,
                        'line_number': line}
 

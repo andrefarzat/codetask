@@ -72,7 +72,7 @@ class TestParsers(TestCase):
         Parser = get_parser_for_filename('file.py')
         self.assertEqual(Parser, PythonParser)
 
-        # passing an unknown file, returns the BaseParser
+        # passing an unknown file type, returns the BaseParser
         Parser = get_parser_for_filename('file.non_existant')
         self.assertEqual(Parser, BaseParser)
 
@@ -119,8 +119,8 @@ class TestPythonParser(TestCase):
         parser = PythonParser('#oi')
         self.assertEqual(parser._text, 'oi')
 
-        parser = PythonParser('""" oi """')
-        self.assertEqual(parser._text, 'oi')
+        parser = PythonParser('"""\n[] task 1\n[] task 2\n"""')
+        self.assertEqual(parser._text, '[] task 1\n[] task 2')
 
     def test_file_matches(self):
         self.assertTrue(PythonParser.file_matches('a.py'))
@@ -137,6 +137,10 @@ class TestRubyParser(TestCase):
     def test_remove_markers(self):
         parser = RubyParser('#oi')
         self.assertEqual(parser._text, 'oi')
+
+        txt = '=begin\n[] task 1\n[] task 2\n=end'
+        parser = RubyParser(txt)
+        self.assertEqual(parser._text, '[] task 1\n[] task 2')
 
     def test_file_matches(self):
         self.assertTrue(RubyParser.file_matches('a.rb'))
