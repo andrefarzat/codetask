@@ -69,7 +69,10 @@ class TestExtractedTask(TestCase):
 
     def test_text(self):
         """given a whole line, it would return only the text of the task"""
-        task = ExtractedTask('# todo: nothing', 'python.py')
+        raw_text = '# todo: nothing'
+        task = ExtractedTask(raw_text, 'python.py')
+
+        self.assertEqual(task.raw_text, raw_text)
         self.assertEqual(task.text, 'nothing')
         self.assertEqual(task.label, 'todo')
         self.assertEqual(task.filepath, 'python.py')

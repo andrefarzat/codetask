@@ -79,21 +79,19 @@ class Extractor:
     def get_tasks(self):
         """Return a generator with ExtractedTask instances"""
         for token in self.get_valid_tokens():
-            task = ExtractedTask(token['text'], self.filepath)
-            task.line_number = token['line_number']
+            task = ExtractedTask(text=token['text'], filepath=self.filepath,
+                                 line_number=token['line_number'])
             yield task
 
 
 class ExtractedTask:
     """Default scaffolding for an extracted task"""
-    text = ''
-    filepath = ''
-    line_number = None
 
     def __init__(self, text, filepath, line_number=None):
         Parser = get_parser_for_filename(filepath)
         parser = Parser(text)
 
+        self.raw_text = text
         self.text = parser.text.strip()
         self.filepath = filepath
         self.line_number = line_number

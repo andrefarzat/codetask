@@ -57,7 +57,7 @@ class BaseParser:
 
 
 class PythonParser(BaseParser):
-    pattern = re.compile(r'\w+\.py$')
+    pattern = re.compile(r'.+\.py$')
 
     def remove_markers(self, text):
         if text.startswith('#'):
@@ -67,7 +67,7 @@ class PythonParser(BaseParser):
 
 
 class RubyParser(BaseParser):
-    pattern = re.compile(r'\w+\.rb$')
+    pattern = re.compile(r'.+\.rb$')
 
     def remove_markers(self, text):
         if text.startswith('#'):

@@ -88,9 +88,19 @@ class TestPythonParser(TestCase):
         parser = PythonParser('""" oi """')
         self.assertEqual(parser._text, 'oi')
 
+    def test_file_matches(self):
+        self.assertTrue(PythonParser.file_matches('a.py'))
+        self.assertTrue(PythonParser.file_matches('some/place.py'))
+        self.assertTrue(PythonParser.file_matches('any/long/close/place.py'))
+
 
 class TestRubyParser(TestCase):
 
     def test_remove_markers(self):
         parser = RubyParser('#oi')
         self.assertEqual(parser._text, 'oi')
+
+    def test_file_matches(self):
+        self.assertTrue(RubyParser.file_matches('a.rb'))
+        self.assertTrue(RubyParser.file_matches('some/place.rb'))
+        self.assertTrue(RubyParser.file_matches('any/long/close/place.rb'))
