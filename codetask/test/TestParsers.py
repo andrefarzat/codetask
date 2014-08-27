@@ -23,6 +23,11 @@ SQUARED_TEXTS = (
     ('[](dee dee):', {'text': '', 'closed': False, 'username': 'dee dee'}),
     ('[x](mark)', {'text': '', 'closed': True, 'username': 'mark'}),
     ('[x](C. J.)', {'text': '', 'closed': True, 'username': 'C. J.'}),
+
+    ('[] vamo que vamo! asdsadasda', {'text': 'vamo que vamo! asdsadasda',
+                                      'closed': False, 'username': ''}),
+    ('[](joey): vamo que vamo! né', {'text': 'vamo que vamo! né',
+                                      'closed': False, 'username': 'joey'}),
 )
 
 
@@ -40,6 +45,24 @@ COLON_TEXTS = (
     ('todo (joey ):', {'text': '', 'username': 'joey', 'label': 'todo'}),
     ('todo(joey): some task', {'text': 'some task', 'username': 'joey',
                                'label': 'todo'}),
+)
+
+AT_TEXTS = (
+    ('@todo', {'text': '', 'username': '', 'label': 'todo'}),
+    ('@todo:', {'text': '', 'username': '', 'label': 'todo'}),
+    ('@TODO:', {'text': '', 'username': '', 'label': 'todo'}),
+    ('   @tOdO:', {'text': '', 'username': '', 'label': 'todo'}),
+
+    ('@todo:some task', {'text': 'some task', 'username': '',
+                         'label': 'todo'}),
+    ('@tod: some task', {'text': 'some task', 'username': '', 'label': 'tod'}),
+
+    ('@todo(joey):', {'text': '', 'username': 'joey', 'label': 'todo'}),
+    ('@todo (joey):', {'text': '', 'username': 'joey', 'label': 'todo'}),
+    ('@todo(joey ):', {'text': '', 'username': 'joey', 'label': 'todo'}),
+    ('@todo (joey ):', {'text': '', 'username': 'joey', 'label': 'todo'}),
+    ('@todo(joey): some task', {'text': 'some task', 'username': 'joey',
+                                'label': 'todo'}),
 )
 
 
@@ -73,6 +96,13 @@ class TestParsers_parse_text(TestCase):
 
     def test_colon_cases(self):
         for text, expected in COLON_TEXTS:
+            parser = BaseParser(text)
+            self.assertEqual(parser.text, expected['text'])
+            self.assertEqual(parser.label, expected['label'])
+            self.assertEqual(parser.username, expected['username'])
+
+    def test_at_cases(self):
+        for text, expected in AT_TEXTS:
             parser = BaseParser(text)
             self.assertEqual(parser.text, expected['text'])
             self.assertEqual(parser.label, expected['label'])

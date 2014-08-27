@@ -5,6 +5,7 @@ class BaseParser:
     pattern = re.compile(r'\w+\.txt$')
     _squared_pattern = re.compile(r'(\[.?\])(\([\w\s\-\.\@]+\))?:?(.+)?$')
     _colon_pattern = re.compile(r'([\w\s]+)(\([\w\s]+\))?:([\w\s]+)?')
+    _at_pattern = re.compile(r'(@[\w\s]+)(\([\w\s]+\))?:?([\w\s\!]+)?')
     _username_pattern = re.compile(r'(^\(|\)$)')
 
     def __init__(self, text):
@@ -28,6 +29,8 @@ class BaseParser:
     def parse_text(self, text):
         if text.startswith('['):
             self._parse_squared_text(text)
+        elif text.startswith('@'):
+            self._parse_at_text(text)
         else:
             self._parse_colon_text(text)
 
@@ -37,13 +40,24 @@ class BaseParser:
         return username.strip()
 
     def parse_label(self, label):
-        return label.strip().lower()
+        label = label.strip().lower()
+        if label.startswith('@'):
+            label = label[1:]
+        return label
 
     def _parse_squared_text(self, text):
         result = self._squared_pattern.match(text)
         if result:
             self.label = ''
             self.closed = (result.group(1) == '[x]')
+            self.username = self.parse_username(result.group(2) or '')
+            self.text = (result.group(3) or '').strip()
+
+    def _parse_at_text(self, text):
+        result = self._at_pattern.match(text)
+        if result:
+            self.closed = False
+            self.label = self.parse_label(result.group(1) or '')
             self.username = self.parse_username(result.group(2) or '')
             self.text = (result.group(3) or '').strip()
 
