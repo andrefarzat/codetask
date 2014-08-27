@@ -72,6 +72,10 @@ class TestParsers(TestCase):
         Parser = get_parser_for_filename('file.py')
         self.assertEqual(Parser, PythonParser)
 
+        # passing an unknown file, returns the BaseParser
+        Parser = get_parser_for_filename('file.non_existant')
+        self.assertEqual(Parser, BaseParser)
+
     def test_parse_username(self):
         parser = BaseParser('')
         texts = (
@@ -123,6 +127,10 @@ class TestPythonParser(TestCase):
         self.assertTrue(PythonParser.file_matches('some/place.py'))
         self.assertTrue(PythonParser.file_matches('any/long/close/place.py'))
 
+        self.assertFalse(PythonParser.file_matches('a.pyc'))
+        self.assertFalse(PythonParser.file_matches('some/place.pyo'))
+        self.assertFalse(PythonParser.file_matches('any/long/close/place'))
+
 
 class TestRubyParser(TestCase):
 
@@ -134,3 +142,7 @@ class TestRubyParser(TestCase):
         self.assertTrue(RubyParser.file_matches('a.rb'))
         self.assertTrue(RubyParser.file_matches('some/place.rb'))
         self.assertTrue(RubyParser.file_matches('any/long/close/place.rb'))
+
+        self.assertFalse(RubyParser.file_matches('a.sass'))
+        self.assertFalse(RubyParser.file_matches('some/place.nada'))
+        self.assertFalse(RubyParser.file_matches('any/long/close/place'))

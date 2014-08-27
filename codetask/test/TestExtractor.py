@@ -25,6 +25,12 @@ class TestExtractor(TestCase):
     python_file = os.path.join(BASE_DIR, 'python.py')
     text_file = os.path.join(BASE_DIR, 'text.txt')
 
+    def test___repr__(self):
+        extractor = Extractor(self.python_file)
+
+        self.assertEqual(extractor.__repr__(),
+                         '<Extractor filepath=%s>' % self.python_file)
+
     def test_file_content_property(self):
         with open(self.python_file) as f:
             file_content = f.read()
