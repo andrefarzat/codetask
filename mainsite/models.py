@@ -1,3 +1,5 @@
+import os
+
 from django.db import models
 
 
@@ -14,6 +16,14 @@ class Task(models.Model):
     @property
     def closed(self):
         return self.closed_in_commit is not None
+
+    @property
+    def commit(self):
+        return self.opened_in_commit
+
+    @property
+    def filename(self):
+        return os.path.split(self.filepath)[1]
 
 
 class Commit(models.Model):
