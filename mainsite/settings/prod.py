@@ -1,4 +1,4 @@
-from mainsite.settigns import *
+from mainsite.settings import *
 
 DATABASES = {
     'default': {
