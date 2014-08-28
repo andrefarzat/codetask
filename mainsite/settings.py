@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'django_nose',
     # Local
     'codetask',
+    'mainsite',
 )
 
 MIDDLEWARE_CLASSES = (
