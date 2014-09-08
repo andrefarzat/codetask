@@ -2,7 +2,7 @@
 from django.test import TestCase
 
 from codetask.parsers import (get_parser_for_filename, BaseParser,
-                              PythonParser, RubyParser)
+                              PythonParser, RubyParser, JavascriptParser)
 
 
 SQUARED_TEXTS = (
@@ -150,3 +150,22 @@ class TestRubyParser(TestCase):
         self.assertFalse(RubyParser.file_matches('a.sass'))
         self.assertFalse(RubyParser.file_matches('some/place.nada'))
         self.assertFalse(RubyParser.file_matches('any/long/close/place'))
+
+
+class TestJavascriptParser(TestCase):
+
+    def test_remove_markers(self):
+        parser = JavascriptParser('// oi')
+        self.assertEqual(parser._text, 'oi')
+
+        parser = JavascriptParser('/* taram taram */')
+        self.assertEqual(parser._text, 'taram taram')
+
+    def test_file_matches(self):
+        self.assertTrue(JavascriptParser.file_matches('a.js'))
+        self.assertTrue(JavascriptParser.file_matches('some/place.js'))
+        self.assertTrue(JavascriptParser.file_matches('any/long/clse/place.js'))
+
+        self.assertFalse(JavascriptParser.file_matches('a.sass'))
+        self.assertFalse(JavascriptParser.file_matches('some/place.nada'))
+        self.assertFalse(JavascriptParser.file_matches('any/long/close/place'))

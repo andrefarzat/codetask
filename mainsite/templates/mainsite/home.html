@@ -1,0 +1,15 @@
+{% extends 'mainsite/base.html' %}
+
+{% block content %}
+    <br />
+
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <p>
+            <input type="submit" value="vai" />
+        </p>
+    </form>
+{% endblock %}

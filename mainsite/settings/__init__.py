@@ -28,6 +28,7 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = 'mainsite.User'
 
 # Application definition
 

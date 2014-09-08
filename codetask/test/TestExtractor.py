@@ -82,3 +82,10 @@ class TestExtractedTask(TestCase):
         self.assertEqual(task.text, 'nothing')
         self.assertEqual(task.label, 'todo')
         self.assertEqual(task.filepath, 'python.py')
+
+    def test_is_valid(self):
+        task = ExtractedTask('', 'python.py')
+        self.assertFalse(task.is_valid())
+
+        task = ExtractedTask('# todo: nothing', 'python.py')
+        self.assertTrue(task.is_valid())

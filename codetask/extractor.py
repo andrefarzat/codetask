@@ -99,3 +99,11 @@ class ExtractedTask:
         self.filepath = filepath
         self.line_number = line_number
         self.label = parser.label
+
+    def __repr__(self):
+        text = ('text="%s"' % self.text[:30]) if self.text else ''
+        label = ('label="%s" ' % self.label) if self.label else ''
+        return '<ExtractedTask {label}{text}>'.format(text=text, label=label)
+
+    def is_valid(self):
+        return self.text != ''

@@ -1,6 +1,12 @@
 import os
 
+from django.contrib.auth.models import AbstractUser
+from django.conf import settings
 from django.db import models
+
+
+class User(AbstractUser):
+    pass
 
 
 class Task(models.Model):
@@ -25,6 +31,16 @@ class Task(models.Model):
     def filename(self):
         return os.path.split(self.filepath)[1]
 
+    @classmethod
+    def create_from_extracted_task(cls, extracted_task):
+        task = cls()
+        task.text = extracted_task.text
+        task.filepath = extracted_task.filepath
+        task.line_number = extracted_task.line_number
+        task.label = extracted_task.label
+        task.username = extracted_task.username
+        return task
+
 
 class Commit(models.Model):
     repository = models.ForeignKey('Repository')
@@ -40,6 +56,7 @@ class Repository(models.Model):
         ('bitbucket', 'BitBucket'),
     )
 
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL)
     name = models.CharField(max_length=255)
     type = models.CharField(max_length=10, choices=TYPE_CHOICES,
                             default='local')

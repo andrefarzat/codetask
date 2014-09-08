@@ -92,7 +92,19 @@ class RubyParser(BaseParser):
         return text.strip()
 
 
-PARSERS = (PythonParser, RubyParser, )
+class JavascriptParser(BaseParser):
+    pattern = re.compile(r'.+\.js$')
+    _beginend_pattern = re.compile(r'(^\/\*)|(\*\/$)')
+
+    def remove_markers(self, text):
+        if text.startswith('//'):
+            text = text[2:]
+        else:
+            text = self._beginend_pattern.sub('', text, count=2)
+        return text.strip()
+
+
+PARSERS = (PythonParser, RubyParser, JavascriptParser, )
 
 
 def get_parser_for_filename(filename):
