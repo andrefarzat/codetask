@@ -4,9 +4,31 @@ from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from django.db import models
 
+from codetask.extractor import DirExtractor
+
 
 class User(AbstractUser):
     pass
+
+
+class Repository(models.Model):
+    TYPE_CHOICES = (
+        ('local', 'Local'),
+        ('github', 'Github'),
+        ('bitbucket', 'BitBucket'),
+    )
+
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL)
+    name = models.CharField(max_length=255)
+    type = models.CharField(max_length=10, choices=TYPE_CHOICES,
+                            default='local')
+
+    def get_current_commit(self, branch_name='master'):
+        return self.commits.filter(branch_name=branch_name)[0]
+
+    def get_path(self):
+        """Returns the file system path to repository dir"""
+        return os.path.join(settings.BASE_DIR, '')
 
 
 class Task(models.Model):
@@ -48,15 +70,6 @@ class Commit(models.Model):
     commit_time = models.DateTimeField(auto_now_add=True)
     branch_name = models.CharField(max_length=255)
 
-
-class Repository(models.Model):
-    TYPE_CHOICES = (
-        ('local', 'Local'),
-        ('github', 'Github'),
-        ('bitbucket', 'BitBucket'),
-    )
-
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL)
-    name = models.CharField(max_length=255)
-    type = models.CharField(max_length=10, choices=TYPE_CHOICES,
-                            default='local')
+    def get_dir_extractor(self):
+        path = self.repository.get_path()
+        return DirExtractor(path)

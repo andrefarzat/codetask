@@ -12,7 +12,7 @@ class MainSiteNoseTestSuiteRunner(NoseTestSuiteRunner):
         apps) to be tested, which is what we want.
         """
         if len(test_labels) == 0:
-            test_labels = ('codetask',)
+            test_labels = ('codetask', 'mainsite')
         return super(MainSiteNoseTestSuiteRunner, self).run_tests(test_labels,
                                                                   *args,
                                                                   **kwargs)

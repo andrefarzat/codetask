@@ -98,6 +98,7 @@ class ExtractedTask:
         self.text = parser.text.strip()
         self.filepath = filepath
         self.line_number = line_number
+        self.username = parser.username
         self.label = parser.label
 
     def __repr__(self):
