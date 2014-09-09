@@ -89,3 +89,19 @@ class TestExtractedTask(TestCase):
 
         task = ExtractedTask('# todo: nothing', 'python.py')
         self.assertTrue(task.is_valid())
+
+    def test___repr__(self):
+        task = ExtractedTask('', 'python.py')
+        task.text = 'Simple text'
+        task.label = 'mylabel'
+        self.assertEqual(task.__repr__(),
+                         '<ExtractedTask label="mylabel" text="Simple text">')
+
+        task = ExtractedTask('', 'python.py')
+        task.label = 'mylabel'
+        self.assertEqual(task.__repr__(), '<ExtractedTask label="mylabel" >')
+
+        task = ExtractedTask('', 'python.py')
+        task.text = 'a text very long which is bigger than 30 chars'
+        self.assertEqual(task.__repr__(),
+                         '<ExtractedTask text="%s">' % task.text[:30])
