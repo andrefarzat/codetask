@@ -7,3 +7,4 @@ django-nose==1.2
 ipdb==0.8
 django-allauth==0.18.0
 MySQL-python==1.2.5
+factory-boy==2.4.1
