@@ -31,7 +31,7 @@ class Repository(models.Model):
 
     def get_path(self):
         """Returns the file system path to repository dir"""
-        return os.path.join(settings.BASE_DIR, '')
+        return os.path.join(settings.BASE_DIR, 'test', 'mockproj')
 
 
 class Task(models.Model):
@@ -45,7 +45,7 @@ class Task(models.Model):
                                          related_name='closed_tasks')
 
     @property
-    def closed(self):
+    def is_closed(self):
         return self.closed_in_commit is not None
 
     @property
@@ -74,5 +74,5 @@ class Commit(models.Model):
     branch_name = models.CharField(max_length=255)
 
     def get_dir_extractor(self):
-        path = self.repository.get_path()
+        path = os.path.join(self.repository.get_path(), self.branch_name)
         return DirExtractor(path)

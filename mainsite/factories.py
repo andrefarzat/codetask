@@ -26,3 +26,10 @@ class CommitFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = 'mainsite.Commit'
+
+
+class TaskFactory(factory.django.DjangoModelFactory):
+    opened_in_commit = factory.SubFactory(CommitFactory)
+
+    class Meta:
+        model = 'mainsite.Task'

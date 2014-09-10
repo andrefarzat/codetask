@@ -40,7 +40,7 @@ class TestProcessCommitCommand(TestCase):
         cmd = ProcessCommitCommand()
 
         cmd._process_commit(repository=repo, commit_hash='abcd',
-                            branch_name='somename')
+                            branch_name='v0')
 
         self.assertEqual(repo.commits.count(), 1)
         self.assertFail('Continue')
