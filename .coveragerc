@@ -1,0 +1,6 @@
+[run]
+omit =
+    */mainsite/__init__.py
+    */mainsite/settings/*
+    */migrations/*
+    */tests*
