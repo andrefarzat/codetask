@@ -24,7 +24,10 @@ class Repository(models.Model):
                             default='local')
 
     def get_current_commit(self, branch_name='master'):
-        return self.commits.filter(branch_name=branch_name)[0]
+        try:
+            return self.commits.filter(branch_name=branch_name)[0]
+        except IndexError:
+            raise self.DoesNotExist()
 
     def get_path(self):
         """Returns the file system path to repository dir"""
@@ -65,7 +68,7 @@ class Task(models.Model):
 
 
 class Commit(models.Model):
-    repository = models.ForeignKey('Repository')
+    repository = models.ForeignKey('Repository', related_name='commits')
     commit_hash = models.CharField(max_length=255)
     commit_time = models.DateTimeField(auto_now_add=True)
     branch_name = models.CharField(max_length=255)

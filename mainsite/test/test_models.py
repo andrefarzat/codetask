@@ -2,14 +2,19 @@ from django.test import TestCase
 from django.utils import unittest
 
 from codetask.extractor import DirExtractor
-from mainsite.models import Commit  # Repository, User, Task
+from mainsite.factories import RepositoryFactory, CommitFactory
 
 
 class TestRespositoryModel(TestCase):
 
-    @unittest.skip('Waiting to the method exist')
     def test_get_current_commit(self):
-        pass
+        repo = RepositoryFactory()
+        commit = CommitFactory(repository=repo, branch_name='master')
+        self.assertEqual(commit, repo.get_current_commit())
+
+        repo = RepositoryFactory()
+        with self.assertRaises(repo.DoesNotExist):
+            repo.get_current_commit()
 
     @unittest.skip('Waiting to the method exist')
     def test_get_path(self):

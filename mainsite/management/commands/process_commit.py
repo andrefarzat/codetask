@@ -36,7 +36,8 @@ class Command(BaseCommand):
 
     def _get_repository(self, username, repository_name):
         user = User.objects.get(username=username)
-        return Repository.get_or_create(name=repository_name, user=user)
+        return Repository.objects.get_or_create(name=repository_name,
+                                                owner=user)[0]
 
     def _process_commit(self, repository, commit_hash, branch_name):
         commit = Commit(repository=repository, commit_hash=commit_hash,
